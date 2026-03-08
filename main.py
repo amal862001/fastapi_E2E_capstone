@@ -2,6 +2,10 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from sqlalchemy import create_engine, text
 from config import settings
+from routers.auth import router as auth_router
+from routers.complaints import router as complaints_router
+
+
 
 # create database engine
 engine = create_engine(settings.DATABASE_URL)
@@ -24,6 +28,12 @@ app = FastAPI(
     lifespan=lifespan
 )
 
+# register routers
+app.include_router(auth_router)
+app.include_router(complaints_router)
+
 @app.get("/")
 def root():
     return {"message": "NYC 311 API is running"}
+
+

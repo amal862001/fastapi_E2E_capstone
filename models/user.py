@@ -1,10 +1,10 @@
-from sqlalchemy.orm import DeclarativeBase
 from sqlalchemy import Column, Integer, String, DateTime
-from datetime import datetime, timezone
+from datetime import datetime, timezone 
+from sqlalchemy.orm import DeclarativeBase
 
-# create Base from DeclarativeBase
 class Base(DeclarativeBase):
     pass
+
 
 class PlatformUser(Base):
     __tablename__ = "platform_users"

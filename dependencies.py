@@ -1,21 +1,18 @@
 from fastapi import Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
+from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from database import get_db
 from services.auth_service import decode_access_token, get_user_by_id
 from models.user import PlatformUser
 
-# bearer token extractor
-bearer_scheme = HTTPBearer()
+# points to login endpoint
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def get_current_user(
-    credentials: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    token: str = Depends(oauth2_scheme),
     db: Session = Depends(get_db)
 ) -> PlatformUser:
-
-    # extract token from Authorization header
-    token = credentials.credentials
 
     # decode the token
     payload = decode_access_token(token)
